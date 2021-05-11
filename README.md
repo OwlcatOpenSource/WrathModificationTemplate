@@ -23,7 +23,7 @@ Getting started
 5. Test your modification
     * Copy **Build/your-modification-name** folder to **_user-folder_/AppData/LocalLow/Owlcat Games/Pathfinder Wrath Of The Righteous/Modifications**
     * Add your modification to **_user-folder_/AppData/LocalLow/Owlcat Games/Pathfinder Wrath Of The Righteous/OwlcatModificationManangerSettings.json**
-        ```json
+        ```json5
         {
             "EnabledModifications": ["your-modification-name"] // use name from the manifest(!), not folder name
         }
@@ -51,9 +51,9 @@ All of your content (assets, prefabs, scenes, sprites, etc) must be placed in **
 Blueprints are JSON files which represent serialized version of static game data (classes inherited from **SimpleBlueprint**).
 
 * Blueprints must have file extension ***.jbp** and must be situated in **_your-modification-name_/Blueprints** folder.
-    * _example: ExampleModification/Blueprints/TestBuff.jbp_
+    * _example: Examples/Basics/Blueprints/TestBuff.jbp_
 
-    ```json
+    ```json5
     // *.jbp file format
     {
         "AssetId": "unity-file-guid-from-meta", // "42ea8fe3618449a5b09561d8207c50ab" for example
@@ -76,13 +76,13 @@ Blueprints are JSON files which represent serialized version of static game data
 
 * You can write patches for existing blueprints: to do so, create a ***.patch** JSON file in **_your-modification-name_/Blueprints** folder. Instead of creating a new blueprint, these files will modify existing ones by changing only fields that are specified in the patch and retaining everything else as-is.
 
-    * _Example: ExampleModification/Blueprints/ChargeAbility.patch_
+    * _Example: Examples/Basics/Blueprints/ChargeAbility.patch_
 
     * Connection between the existing blueprint and the patch must be specified in **BlueprintPatches** scriptable object _(right click in folder -> Create -> Blueprints' Patches)_
 
-        * _example: ExampleModification/BlueprintPatches.asset_
+        * _example: Examples/Basics/BlueprintPatches.asset_
 
-    ```json
+    ```json5
     // *.patch file format: change icon in BlueprintBuff
     {
         "m_Icon": {"guid": "c0fe3dda356ba6349bd5a8d39aad7ecb", "fileid": 21300000}
@@ -93,13 +93,13 @@ Blueprints are JSON files which represent serialized version of static game data
 
 You can add localized strings to the game or replace existing strings. Create **enGB|ruRU|deDE|frFR|zhCN|esES.json** file(s) in **_your-modification-name_/Localization** folder.
 
-* _example: ExampleModification/Localizations/enGB.json_
+* _example: Examples/Basics/Localizations/enGB.json_
 
 * You shouldn't copy enGB locale with different names if creating only enGB strings: enGB locale will be used if modification doesn't contains required locale.
 
 * The files should be in UTF-8 format (no fancy regional encodings, please!)
 
-```json
+```json5
 // localization file fromat
 {
     "strings": [
@@ -115,7 +115,7 @@ You can add localized strings to the game or replace existing strings. Create **
 
 You can mark static method with **OwlcatModificationEnterPoint** attribute and the game will invoke this method with corresponding _OwlcatModification_ parameter once on game start. Only one entry point per assembly is allowed.
 
-* _example: ExampleModification/Scripts/ModificationRoot.cs (ModificationRoot.Initialize method)_
+* _example: Examples/Basics/Scripts/ModificationRoot.cs (ModificationRoot.Initialize method)_
 
 ```C#
 [OwlcatModificationEnterPoint]
@@ -129,7 +129,7 @@ public static void EnterPoint(OwlcatModification modification)
 
 * You can save/load global modification's data or settings with methods _OwlcatModification_.**LoadData** and  _OwlcatModification_.**SaveData**. Unity Serializer will be used for saving this data.
 
-    * _Example: ExampleModification/Scripts/ModificationRoot.cs (ModificationRoot.TestData method)_
+    * _Example: Examples/Basics/Scripts/ModificationRoot.cs (ModificationRoot.TestData method)_
 
     ```C#
     [Serialzable]
@@ -161,7 +161,7 @@ public static void EnterPoint(OwlcatModification modification)
 
 You can subscribe to game events with **EventBus.Subscribe** or raise your own event using **EventBus.RaiseEvent**.
 
-* _Example (subscribe): ExampleModification/Scripts/ModificationRoot.cs (ModificationRoot.Initialize method)_
+* _Example (subscribe): Examples/Basics/Scripts/ModificationRoot.cs (ModificationRoot.Initialize method)_
 
 * Raise your own event:
 
@@ -189,7 +189,7 @@ A **Controller** is a class that implements a particular set of game mechanics. 
 
 **Game Modes** (objects of class _GameMode_) are logical groupings of **Controllers** which all must be active at the same time. Only one **Game Mode** can be active at any moment. Each frame the game calls **Tick** method for every **Controller** in active **Game Mode**. You can add your own logic to Pathfinder's main loop or extend/replace existing logic using **OwlcatModificationGameModeHelper**.
 
-* _Example (subscribe): ExampleModification/Scripts/Tests/ControllersTest.cs_
+* _Example (subscribe): Examples/Basics/Scripts/Tests/ControllersTest.cs_
 
 ### Using Pathfinder shaders
 
@@ -201,7 +201,7 @@ You can create scenes for modifications but there is a couple limitations:
 
 * if you want to use Owlcat's MonoBehaviours (i.e. UnitSpawner) you must inherit from it and use child class defined in your assembly
 
-* place an object with component **OwlcatModificationMaterialsInBundleAsset** in every scene which contains Renderers
+* place an object with component **OwlcatModificationMaterialsInSceneFixer** in every scene which contains Renderers
 
 ### Helpers
 
