@@ -7,13 +7,29 @@ namespace OwlcatModification.Editor.Setup
 {
 	public static class ProjectSetup
 	{
-		[MenuItem("Modification Tools/Setup assemblies", false, -1000)]
+		private const string WotrDirectoryKey = "wotr_directory";
+		
+		[MenuItem("Modification Tools/Setup project", false, -1000)]
 		public static void Setup()
 		{
 			try
 			{
-				EditorUtility.DisplayProgressBar("Setup assemblies", "", 0);
-				SetupAssemblies();
+				EditorUtility.DisplayProgressBar("Setup project", "", 0);
+
+				string wotrDirectory = EditorUtility.OpenFolderPanel(
+					"Pathfinder: Wrath of the Righteous folder", EditorPrefs.GetString(WotrDirectoryKey, ""), "");
+				if (!Directory.Exists(wotrDirectory))
+				{
+					throw new Exception("WotR folder is missing!");
+				}
+				
+				EditorPrefs.SetString(WotrDirectoryKey, wotrDirectory);
+				SetupAssemblies(wotrDirectory);
+				
+				File.Copy(
+					Path.Combine(wotrDirectory, "Bundles/utility_shaders"), 
+					"Assets/RenderPipeline/utility_shaders", 
+					true);
 			}
 			catch (Exception e)
 			{
@@ -25,7 +41,7 @@ namespace OwlcatModification.Editor.Setup
 			}
 		}
 
-		private static void SetupAssemblies()
+		private static void SetupAssemblies(string wotrDirectory)
 		{
 			string[] skipAssemblies = {
 				"mscorlib.dll",
@@ -33,16 +49,10 @@ namespace OwlcatModification.Editor.Setup
 				"Owlcat.SharedTypes.dll"
 			};
 
-			string assembliesDirectory = EditorUtility.OpenFolderPanel(
-				"<Wrath-of-the-Righteous>/Wrath_Data/Managed", "", "");
-			if (!Directory.Exists(assembliesDirectory))
-			{
-				throw new Exception("Assemblies' folder is missing!");
-			}
+			const string targetAssembliesDirectory = "Assets/PathfinderAssemblies";
+			Directory.CreateDirectory(targetAssembliesDirectory);
 
-			const string targetDirectory = "Assets/PathfinderAssemblies";
-			Directory.CreateDirectory(targetDirectory);
-			
+			string assembliesDirectory = Path.Combine(wotrDirectory, "Wrath_Data/Managed");
 			foreach (string assemblyPath in Directory.GetFiles(assembliesDirectory, "*.dll"))
 			{
 				if (skipAssemblies.Any(assemblyPath.EndsWith))
@@ -51,7 +61,7 @@ namespace OwlcatModification.Editor.Setup
 				}
 
 				string filename = Path.GetFileName(assemblyPath);
-				File.Copy(assemblyPath, Path.Combine(targetDirectory, filename), true);
+				File.Copy(assemblyPath, Path.Combine(targetAssembliesDirectory, filename), true);
 			}
 			
 			AssetDatabase.Refresh();
