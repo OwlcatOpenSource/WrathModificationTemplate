@@ -1,0 +1,13 @@
+.idea/
+/Build/
+Library/
+Logs/
+obj/
+Temp/
+Assets/PathfinderAssemblies*
+**/Generated/*
+**/Generated.meta
+Assets/RenderPipeline/*
+!Assets/RenderPipeline/OwlcatShaders*
+!Assets/RenderPipeline/UnityShaders*
+!Assets/RenderPipeline/utility_shaders*

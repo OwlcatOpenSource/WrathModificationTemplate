@@ -1,0 +1,16 @@
+{
+    "strings": [
+        {
+            "Key": "15edb451-dc5b-4def-807c-a451743eb3a6",
+            "Value": "Test buff title"
+        },
+        {
+            "Key": "7d355933-b51b-441a-934f-9347e3e332f4",
+            "Value": "Test buff description"
+        },
+        {
+            "Key": "920ff290-c529-44c2-b903-8471210304e0",
+            "Value": "Test buff short description"
+        }
+    ]
+}
