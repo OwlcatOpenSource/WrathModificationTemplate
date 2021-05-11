@@ -3,7 +3,7 @@ Getting started
 
 1. Open the project using **Unity 2019.4.0f1**
     * Unity console will show many compiler errors, but **don't panic**!
-    * Click **Modification Tools -> Setup assemblies** menu entry and choose **_Pathfinder-WotR-installation-folder_/Wrath_Data/Managed** folder in the dialog that will appear
+    * Click **Modification Tools -> Setup project** menu entry and choose _**Pathfinder: Wrath of the Righteous** installation folder_ in the dialog that will appear
     * If Unity shows you **API Update Required** dialog click **No Thanks**
     * Close and reopen project
     * Click **Modification Tools -> Setup render pipeline** menu entry
@@ -220,4 +220,4 @@ Work in progress. Please note that users will be able to change order of mods in
 ### Testing
 
 * Command line argument **-start_from=_area-name/area-preset-name_** allows you to start game from the specified area without loading main menu.
-* Cheat *reload_modifications_data* allows you to reload content, blueprints and localizations. All instantiated objects (prefab instances, for example) stays unchanged.
+* Cheat **reload_modifications_data** allows you to reload content, blueprints and localizations. All instantiated objects (prefab instances, for example) stays unchanged.
