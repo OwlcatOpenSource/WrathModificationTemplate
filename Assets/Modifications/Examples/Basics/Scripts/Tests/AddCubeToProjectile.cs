@@ -3,7 +3,7 @@ using Kingmaker.Controllers.Projectiles;
 using Kingmaker.PubSubSystem;
 using UnityEngine;
 
-namespace OwlcatModification.Modification.Tests
+namespace OwlcatModification.Modifications.Examples.Basics.Tests
 {
 	public class AddCubeToProjectileView : IProjectileLaunchedHandler
 	{

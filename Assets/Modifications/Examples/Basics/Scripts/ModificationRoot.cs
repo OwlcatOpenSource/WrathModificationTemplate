@@ -1,10 +1,13 @@
 using System;
+using System.Reflection;
+using HarmonyLib;
 using Kingmaker.Modding;
 using Kingmaker.PubSubSystem;
 using Owlcat.Runtime.Core.Logging;
-using OwlcatModification.Modification.Tests;
+using OwlcatModification.Modifications.Examples.Basics.Tests;
+using UnityEngine;
 
-namespace OwlcatModification.Modification
+namespace OwlcatModification.Modifications.Examples.Basics
 {
 	// ReSharper disable once UnusedType.Global
 	public static class ModificationRoot
@@ -19,8 +22,13 @@ namespace OwlcatModification.Modification
 		{
 			Modification = modification;
 
+			var harmony = new Harmony(modification.Manifest.UniqueName);
+			harmony.PatchAll(Assembly.GetExecutingAssembly());
+
 			TestData();
 			AddLoadResourceCallback();
+
+			modification.OnGUI += OnGUI;
 			
 			EventBus.Subscribe(new BarkOnAttackWithWeapon());
 			EventBus.Subscribe(new AddCubeToProjectileView());
@@ -47,6 +55,12 @@ namespace OwlcatModification.Modification
 					string name = (resource as UnityEngine.Object)?.name ?? resource.ToString();
 					Channel.Log($"Resource loaded: {name}, {resource.GetType().Name}, {guid}");
 				};
+		}
+
+		private static void OnGUI()
+		{
+			GUILayout.Label("Hello world!");
+			GUILayout.Button("Some Button");
 		}
 	}
 }

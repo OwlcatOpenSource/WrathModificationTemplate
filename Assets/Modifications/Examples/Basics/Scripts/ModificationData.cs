@@ -1,6 +1,6 @@
 using System;
 
-namespace OwlcatModification.Modification
+namespace OwlcatModification.Modifications.Examples.Basics
 {
 	[Serializable]
 	public class ModificationData

@@ -2,7 +2,7 @@
 using Kingmaker.PubSubSystem;
 using Kingmaker.RuleSystem.Rules;
 
-namespace OwlcatModification.Modification.Tests
+namespace OwlcatModification.Modifications.Examples.Basics.Tests
 {
     public class BarkOnAttackWithWeapon : IGlobalRulebookHandler<RuleAttackWithWeapon>
     {

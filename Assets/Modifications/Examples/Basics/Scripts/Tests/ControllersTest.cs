@@ -2,7 +2,7 @@ using Kingmaker.Controllers.Units;
 using Kingmaker.GameModes;
 using Kingmaker.Modding;
 
-namespace OwlcatModification.Modification.Tests
+namespace OwlcatModification.Modifications.Examples.Basics.Tests
 {
 	public static class ControllersTest
 	{

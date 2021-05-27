@@ -125,6 +125,25 @@ public static void EnterPoint(OwlcatModification modification)
 }
 ```
 
+### GUI
+
+Use **OwlcatModification.OnGUI** for inserting GUI to the game. It will be accessible from modifications' window (_alt+M_ to open). GUI should be implemented with **IMGUI** (root layout is **vertical**).
+
+* _example: Examples/Basics/Scripts/ModificationRoot.cs (ModificationRoot.Initialize method)_
+
+### Harmony Patching
+
+Harmony lib is included in the game and you can use it for patching code at runtime.
+
+* _example: Examples/Basics/Scripts/ModificationRoot.cs (ModificationRoot.Initialize method) and Examples/Basics/Scripts/Tests/HarmonyPatch.cs_
+
+* [Harmony Documentation](https://harmony.pardeike.net/articles/intro.html)
+
+```C#
+OwlcatModification modification = ...;
+modification.OnGUI = () => GUILayout.Label("Hello world!");
+```
+
 ### Storing data
 
 * You can save/load global modification's data or settings with methods _OwlcatModification_.**LoadData** and  _OwlcatModification_.**SaveData**. Unity Serializer will be used for saving this data.

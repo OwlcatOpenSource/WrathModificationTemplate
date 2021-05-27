@@ -5,7 +5,7 @@ using Kingmaker.UnitLogic;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
 using Kingmaker.UnitLogic.Mechanics;
 
-namespace OwlcatModification.Modification.Tests
+namespace OwlcatModification.Modifications.Examples.Basics.Tests
 {
 	public class BuffMainCharacterOnAreaLoad : IAreaActivationHandler
 	{

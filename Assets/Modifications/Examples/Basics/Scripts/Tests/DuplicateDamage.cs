@@ -3,7 +3,7 @@ using Kingmaker.PubSubSystem;
 using Kingmaker.RuleSystem;
 using Kingmaker.RuleSystem.Rules.Damage;
 
-namespace OwlcatModification.Modification.Tests
+namespace OwlcatModification.Modifications.Examples.Basics.Tests
 {
 	public class DuplicateDamage :
 		IBeforeRulebookEventTriggerHandler<RuleDealDamage>,
