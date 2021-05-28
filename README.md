@@ -127,7 +127,7 @@ public static void EnterPoint(OwlcatModification modification)
 
 ### GUI
 
-Use **OwlcatModification.OnGUI** for inserting GUI to the game. It will be accessible from modifications' window (_alt+M_ to open). GUI should be implemented with **IMGUI** (root layout is **vertical**).
+Use **OwlcatModification.OnGUI** for inserting GUI to the game. It will be accessible from modifications' window (_ctrl+M_ to open). GUI should be implemented with **IMGUI** (root layout is **vertical**).
 
 * _example: Examples/Basics/Scripts/ModificationRoot.cs (ModificationRoot.Initialize method)_
 
