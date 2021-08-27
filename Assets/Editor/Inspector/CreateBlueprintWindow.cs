@@ -103,7 +103,7 @@ namespace OwlcatModification.Editor.Inspector
 				
 				using (new EditorGUILayout.VerticalScope())
 				{
-					string[] words = m_SearchString.Split(' ');
+					string[] words = m_SearchString.ToLowerInvariant().Split(' ');
 					
 					foreach (var t in BlueprintTypesCache.Types)
 					{
