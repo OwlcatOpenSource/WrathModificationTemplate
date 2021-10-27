@@ -57,21 +57,24 @@ namespace OwlcatModification.Editor.Build.Tasks
                 }
 
                 var allObjs = root.DescendantsAndSelf().OfType<JObject>();
-                
+
                 foreach (var obj in allObjs)
                 {
                     var gp = obj["guid"]?.Value<string>();
                     var fp = obj["fileid"]?.Value<long>();
-                    
-                    if(gp!=null && fp != null)
+
+                    if (gp != null && fp != null)
                     {
                         var asset = LoadAsset(gp, fp);
                         if (asset)
                         {
                             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string assetId, out long fileId);
-                            result.Add(asset, assetId, fileId);
-                            EditorUtility.SetDirty(result);
-                            AddToBundle(asset, bundleName);
+                            if (result.Get(assetId, fileId) == null)
+                            {
+                                result.Add(asset, assetId, fileId);
+                                EditorUtility.SetDirty(result);
+                                AddToBundle(asset, bundleName);
+                            }
                         }
                     }
                     else
@@ -79,21 +82,24 @@ namespace OwlcatModification.Editor.Build.Tasks
                         // check if this is a sharedstring asset
                         var ag = obj["assetguid"]?.Value<string>();
                         var sk = obj["stringkey"];
-                        if(ag!=null && sk != null)
+                        if (ag != null && sk != null)
                         {
                             var asset = AssetDatabase.LoadAssetAtPath<SharedStringAsset>(AssetDatabase.GUIDToAssetPath(ag));
                             if (asset)
                             {
                                 AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string assetId, out long fileId);
-                                result.Add(asset, assetId, fileId);
-                                EditorUtility.SetDirty(result);
-                                AddToBundle(asset, bundleName);
+                                if (result.Get(assetId, fileId) == null)
+                                {
+                                    result.Add(asset, assetId, fileId);
+                                    EditorUtility.SetDirty(result);
+                                    AddToBundle(asset, bundleName);
+                                }
                             }
                         }
                     }
                 }
             }
-            
+
             AssetDatabase.SaveAssets();
             
             AddToBundle(result, bundleName);
