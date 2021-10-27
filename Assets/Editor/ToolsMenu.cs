@@ -73,7 +73,6 @@ namespace OwlcatModification.Editor
 
 				SetPrivateValue(renderPipelineAsset, "m_RendererData", clusteredRendererData);
 
-				SetPrivateValue(clusteredRendererData, "m_Clusters", new Clusters {TileSize = 16, Slices = 32});
 				clusteredRendererData.RenderPath = RenderPath.Deferred;
 				clusteredRendererData.ShadersBundlePath = shaderSourcesBundlePath;
 
