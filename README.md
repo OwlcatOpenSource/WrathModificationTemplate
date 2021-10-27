@@ -1,7 +1,7 @@
 Getting started
 ===============
 
-1. Open the project using **Unity 2019.4.0f1**
+1. Open the project using **Unity 2019.4.26f1**
     * Unity console will show many compiler errors, but **don't panic**!
     * Click **Modification Tools -> Setup project** menu entry and choose _**Pathfinder: Wrath of the Righteous** installation folder_ in the dialog that will appear
     * If Unity shows you **API Update Required** dialog click **No Thanks**
@@ -22,12 +22,13 @@ Getting started
 
 5. Test your modification
     * Copy **Build/your-modification-name** folder to **_user-folder_/AppData/LocalLow/Owlcat Games/Pathfinder Wrath Of The Righteous/Modifications**
-    * Add your modification to **_user-folder_/AppData/LocalLow/Owlcat Games/Pathfinder Wrath Of The Righteous/OwlcatModificationManangerSettings.json**
+    * Add your modification to **_user-folder_/AppData/LocalLow/Owlcat Games/Pathfinder Wrath Of The Righteous/OwlcatModificationManagerSettings.json**
         ```json5
         {
             "EnabledModifications": ["your-modification-name"] // use name from the manifest(!), not folder name
         }
         ```
+    * Before patch 1.1.1 there was a typo in filename used to store settings: _OwlcatModificationMana**n**gerSettings.json_. This is now corrected, please use the correct filename (the game will still find file under the old name).
     * Run Pathfinder: Wrath of the Righteous
 
 5. Publish build results from **Build** folder
