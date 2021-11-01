@@ -77,16 +77,49 @@ Blueprints are JSON files which represent serialized version of static game data
 
 * You can write patches for existing blueprints: to do so, create a ***.patch** JSON file in **_your-modification-name_/Blueprints** folder. Instead of creating a new blueprint, these files will modify existing ones by changing only fields that are specified in the patch and retaining everything else as-is.
 
-    * _Example: Examples/Basics/Blueprints/ChargeAbility.patch_
+    * _Example 1: Examples/Basics/Blueprints/ChargeAbility.patch_
+    * 
+    * _Example 2: Examples/Basics/Blueprints/InvisibilityBuff.patch_ 
 
     * Connection between the existing blueprint and the patch must be specified in **BlueprintPatches** scriptable object _(right click in folder -> Create -> Blueprints' Patches)_
 
         * _example: Examples/Basics/BlueprintPatches.asset_
+      
+    * **OLD**: Newtonsoft.Json's Populate is used for patching (_#ArrayMergeSettings and _#Entries isn't supported)
+  
+      * https://www.newtonsoft.com/json/help/html/PopulateObject.htm 
+  
+    * **NEW** (game version 1.1.1): Newtonsoft.Json's Merge is used for patching
+  
+      * https://www.newtonsoft.com/json/help/html/MergeJson.htm
 
     ```json5
-    // *.patch file format: change icon in BlueprintBuff
+    // *.patch file format: change icon in BlueprintBuff and disable first component
     {
-        "m_Icon": {"guid": "c0fe3dda356ba6349bd5a8d39aad7ecb", "fileid": 21300000}
+      "_#ArrayMergeSettings": "Merge", // "Union"/"Concat"/"Replace"
+      "m_Icon": {"guid": "b937cb64288636b4c8fd4ba7bea337ea", "fileid": 21300000},
+      "Components": [
+        {
+          "m_Flags": 1
+        }
+      ]
+    }
+    ```
+  _OR_
+
+    ```json5
+    {
+      "_#Entries": [
+        {
+          "_#ArrayMergeSettings": "Merge", // "Union"/"Concat"/"Replace"
+          "m_Icon": {"guid": "b937cb64288636b4c8fd4ba7bea337ea", "fileid": 21300000},
+          "Components": [
+            {
+              "m_Flags": 1
+            }
+          ]
+        }
+      ]
     }
     ```
 

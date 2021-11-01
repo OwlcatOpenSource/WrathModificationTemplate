@@ -1,3 +1,26 @@
 {
-    "m_Icon": {"guid": "c0fe3dda356ba6349bd5a8d39aad7ecb", "fileid": 21300000}
+  "_#Entries":[
+    {
+      "_#ArrayMergeSettings": "Merge",
+      "m_Icon": {
+        "guid": "a5d39012724cc6542a4ee150c0d84689",
+        "fileid": 21300000
+      },
+      "Components": [ // disable ability restrictions
+        null,
+        {
+          "$type": "0956112276c2f8340b645b372472e09a, BlueprintComponent",
+          "name": "$Empty$0"
+        },
+        {
+          "$type": "0956112276c2f8340b645b372472e09a, BlueprintComponent",
+          "name": "$Empty$1"
+        },
+        {
+          "$type": "0956112276c2f8340b645b372472e09a, BlueprintComponent",
+          "name": "$Empty$2"
+        }
+      ]
+    }
+  ]
 }

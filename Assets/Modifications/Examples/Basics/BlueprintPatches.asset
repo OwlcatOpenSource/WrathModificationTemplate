@@ -15,3 +15,5 @@ MonoBehaviour:
   Entries:
   - Guid: c78506dd0e14f7c45a599990e4e65038
     Filename: ChargeAbility.patch
+  - Guid: 525f980cb29bc2240b93e953974cb325
+    Filename: InvisibilityBuff.patch

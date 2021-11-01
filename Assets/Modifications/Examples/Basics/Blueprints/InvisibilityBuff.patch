@@ -1,0 +1,9 @@
+{
+  "_#ArrayMergeSettings": "Merge",
+  "m_Icon": {"guid": "b937cb64288636b4c8fd4ba7bea337ea", "fileid": 21300000},
+  "Components": [
+    {
+      "m_Flags": 1 // disable Invisibility logic component
+    }
+  ]
+}
