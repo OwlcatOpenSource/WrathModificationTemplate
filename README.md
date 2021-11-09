@@ -197,17 +197,13 @@ modification.OnGUI = () => GUILayout.Label("Hello world!");
     modification.SaveData(data);
     ```
 
-* You can save/load per-save modification's data or settings by adding custom **EntityPart** to **Game.Instance.Player**. **JsonProperty** attribute required for serializing field or property in save.
+* You can save/load per-save modification's data or settings by adding **EntityPartKeyValueStorage** to **Game.Instance.Player**.
+
+    * _Example: Examples/Basics/Scripts/Tests/PerSaveDataTest.cs_
 
     ```C#
-    public class ModificationPlayerData : EntityPart
-    {
-        [JsonProperty]
-        public int IntValue;
-    }
-    ...
-    var data = Game.Instance.Player.Ensure<ModificationPlayerData>();
-    data.IntValue = 42;
+    var data = Game.Instance.Player.Ensure<EntityPartKeyValueStorage>().GetStorage("storage-name");
+    data["IntValue"] = 42.ToString();
     ```
 
 ### EventBus

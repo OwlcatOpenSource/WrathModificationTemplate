@@ -12,9 +12,12 @@ namespace OwlcatModification.Modifications.Examples.Basics
 	// ReSharper disable once UnusedType.Global
 	public static class ModificationRoot
 	{
-		private static Kingmaker.Modding.OwlcatModification Modification { get; set; }
-		
-		private static readonly LogChannel Channel = LogChannelFactory.GetOrCreate("TestModification"); 
+		public static Kingmaker.Modding.OwlcatModification Modification { get; private set; }
+
+		public static bool IsEnabled { get; private set; } = true;
+
+		public static LogChannel Logger
+			=> Modification.Logger;
 
 		// ReSharper disable once UnusedMember.Global
 		[OwlcatModificationEnterPoint]
@@ -28,12 +31,17 @@ namespace OwlcatModification.Modifications.Examples.Basics
 			TestData();
 			AddLoadResourceCallback();
 
-			modification.OnGUI += OnGUI;
+			modification.OnDrawGUI += OnGUI;
+			modification.IsEnabled += () => IsEnabled;
+			modification.OnSetEnabled += enabled => IsEnabled = enabled;
+			modification.OnShowGUI += () => Logger.Log("OnShowGUI");
+			modification.OnHideGUI += () => Logger.Log("OnHideGUI");
 			
 			EventBus.Subscribe(new BarkOnAttackWithWeapon());
 			EventBus.Subscribe(new AddCubeToProjectileView());
 			EventBus.Subscribe(new DuplicateDamage());
 			EventBus.Subscribe(new BuffMainCharacterOnAreaLoad());
+			EventBus.Subscribe(new PerSaveDataTest());
 
 			ControllersTest.SetupControllers();
 		}
@@ -41,19 +49,19 @@ namespace OwlcatModification.Modifications.Examples.Basics
 		private static void TestData()
 		{
 			var data = Modification.LoadData<ModificationData>();
-			Channel.Log($"TestModification: prev load time {data.LastLoadTime}");
+			Logger.Log($"TestModification: prev load time {data.LastLoadTime}");
 			data.LastLoadTime = DateTime.Now.ToString();
-			Channel.Log($"TestModification: current load time {data.LastLoadTime}");
+			Logger.Log($"TestModification: current load time {data.LastLoadTime}");
 			Modification.SaveData(data);
 		}
 
 		private static void AddLoadResourceCallback()
 		{
-			Modification.LoadResourceCallbacks +=
+			Modification.OnLoadResource +=
 				(resource, guid) =>
 				{
 					string name = (resource as UnityEngine.Object)?.name ?? resource.ToString();
-					Channel.Log($"Resource loaded: {name}, {resource.GetType().Name}, {guid}");
+					Logger.Log($"Resource loaded: {name}, {resource.GetType().Name}, {guid}");
 				};
 		}
 

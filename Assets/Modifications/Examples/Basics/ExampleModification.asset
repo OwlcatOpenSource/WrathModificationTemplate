@@ -15,6 +15,9 @@ MonoBehaviour:
   Manifest:
     UniqueName: Example Modification
     Version: 0.1
+    DisplayName: Example Modification
+    Description: Example of modification for Pathfinder Wrath of the Righteous.
+    Author: Owlcat Games
+    Repository: https://github.com/OwlcatOpenSource/WrathModificationTemplatehttps://github.com/OwlcatOpenSource/WrathModificationTemplate
+    HomePage: https://github.com/OwlcatOpenSource/WrathModificationTemplate
     Dependencies: []
-  Settings:
-    BlueprintPatches: {fileID: 11400000, guid: 59d70882aab74c4488cb44b379b9773b, type: 2}
