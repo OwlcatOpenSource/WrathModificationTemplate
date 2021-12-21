@@ -124,18 +124,36 @@ namespace OwlcatModification.Editor
 			BlueprintTypesWindow.ShowWindow();
 		}
 
-		[MenuItem("Assets/Modification Tools/Copy guid and file id", priority = 2)]
-		private static void CopyAssetGuidAndFileID()
-		{
+		private static string FormatAssetId(Func<string, long, string> fmt) {
 			var obj = Selection.activeObject;
 			if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(obj, out string guid, out long fileId))
 			{
-				GUIUtility.systemCopyBuffer = $"{{\"guid\": \"{guid}\", \"fileid\": {fileId}}}";
+				return fmt(guid, fileId);
 			}
 			else
 			{
-				GUIUtility.systemCopyBuffer = $"Can't find guid and fileId for asset '{AssetDatabase.GetAssetPath(obj)}'";
+				string error = $"Can't find guid/fileId for asset '{AssetDatabase.GetAssetPath(obj)}'";
+				EditorUtility.DisplayDialog("Can't find asset", error, "Ok");
+				return error;
 			}
+		}
+
+		[MenuItem("Assets/Modification Tools/Copy AssetId (raw)", priority = 2)]
+		private static void CopyAssetId()
+		{
+			GUIUtility.systemCopyBuffer = FormatAssetId((guid, _) => guid);
+		}
+
+		[MenuItem("Assets/Modification Tools/Copy AssetId (json)", priority = 2)]
+		private static void CopyAssetIdForJson()
+		{
+			GUIUtility.systemCopyBuffer = FormatAssetId((guid, _) => $"{{ \"AssetId\": \"{guid}\" }}");
+		}
+
+		[MenuItem("Assets/Modification Tools/Copy guid and file id (json)", priority = 2)]
+		private static void CopyAssetGuidAndFileID()
+		{
+			GUIUtility.systemCopyBuffer = FormatAssetId((guid, fileId) => $"{{\"guid\": \"{guid}\", \"fileid\": {fileId}}}");
 		}
 		
 		[MenuItem("Assets/Modification Tools/Copy blueprint's guid", priority = 3)]
@@ -164,6 +182,7 @@ namespace OwlcatModification.Editor
 			}
 
 			GUIUtility.systemCopyBuffer = "not blueprint id found";
+			EditorUtility.DisplayDialog("Can't find blueprint", "Blueprint ID is not found", "Ok");
 		}
 		
 		[MenuItem("Assets/Modification Tools/Copy blueprint guid", true)]

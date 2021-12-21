@@ -60,12 +60,10 @@ namespace OwlcatModification.Editor.Build.Tasks
 
                 foreach (var obj in allObjs)
                 {
-                    var gp = obj["guid"]?.Value<string>();
-                    var fp = obj["fileid"]?.Value<long>();
-
-                    if (gp != null && fp != null)
+                    // Helper function common to all patterns
+                    // If the asset exists and it has NOT already been added to the BlueprintReferencedAssets object, add it
+                    void TryAddAsset(UnityEngine.Object asset) 
                     {
-                        var asset = LoadAsset(gp, fp);
                         if (asset)
                         {
                             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string assetId, out long fileId);
@@ -77,25 +75,56 @@ namespace OwlcatModification.Editor.Build.Tasks
                             }
                         }
                     }
-                    else
+
+                    //Note as soon as we find a matching pattern we will unconditionally continue regardless if the asset was found
+                    //An object can't match multiple types of patterns simultaneously (yet?)
+
+                    // Check if this is a guid+fileid style asset:
+                    // These are typically GameObjects that are referenced directly, e.g. icons:
+                    //          "m_Icon": {
+                    //              "guid": "cc03741c7895f0346bc0836f35a99741",
+                    //              "fileid": "21300000"
+                    //          }
+                    var obj_guid = obj["guid"]?.Value<string>();
+                    var obj_fileid = obj["fileid"]?.Value<long>();
+                    if (obj_guid != null && obj_fileid != null)
                     {
-                        // check if this is a sharedstring asset
-                        var ag = obj["assetguid"]?.Value<string>();
-                        var sk = obj["stringkey"];
-                        if (ag != null && sk != null)
-                        {
-                            var asset = AssetDatabase.LoadAssetAtPath<SharedStringAsset>(AssetDatabase.GUIDToAssetPath(ag));
-                            if (asset)
-                            {
-                                AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string assetId, out long fileId);
-                                if (result.Get(assetId, fileId) == null)
-                                {
-                                    result.Add(asset, assetId, fileId);
-                                    EditorUtility.SetDirty(result);
-                                    AddToBundle(asset, bundleName);
-                                }
-                            }
-                        }
+                        var asset = LoadAsset(obj_guid, obj_fileid);
+                        TryAddAsset(asset);
+                        continue;
+                    }
+
+                    // check if this is a sharedstring asset, e.g:
+                    // "m_DisplayName": {
+                    //     "m_Key": "",
+                    //     "m_OwnerString": "",
+                    //     "m_OwnerPropertyPath": "",
+                    //     "m_JsonPath": "",
+                    //     "Shared": {
+                    //         "assetguid": "8d2b31b8256099e4da9c2db1484393a1",
+                    //         "stringkey": "8bf04757-2441-4326-85d0-e003a06562ee"
+                    //     }
+                    // },
+                    var obj_assetguid = obj["assetguid"]?.Value<string>();
+                    var obj_stringkey = obj["stringkey"];
+                    if (obj_assetguid != null && obj_stringkey != null)
+                    {
+                        var asset = AssetDatabase.LoadAssetAtPath<SharedStringAsset>(AssetDatabase.GUIDToAssetPath(obj_assetguid));
+                        TryAddAsset(asset);
+                        continue;
+                    }
+
+                    // Check if this is a WeakResourceLink, such as a Sprite or EquipmentEntity, e.g.
+                    // {
+                    //     "AssetId": "4eea3ef5f2e01474ba5b03fe28324ad3"
+                    // },
+                    // Note this is NOT the same as obj_assetguid
+                    var obj_AssetId = obj["AssetId"]?.Value<string>();
+                    if (obj_AssetId != null)
+                    {
+                        var asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(AssetDatabase.GUIDToAssetPath(obj_AssetId));
+                        TryAddAsset(asset);
+                        continue;
                     }
                 }
             }
