@@ -49,7 +49,7 @@ namespace OwlcatModification.Editor.Build.Tasks
 			foreach (string assetGuid in assetGuids)
 			{
 				string assetPath = AssetDatabase.GUIDToAssetPath(assetGuid);
-				string bundleName = m_LayoutManager.GetBundleForAssetPath(assetPath, m_ModificationParameters.TargetFolderName);
+				string bundleName = m_LayoutManager.GetBundleForAssetPath(assetPath, assetGuid, m_ModificationParameters.TargetFolderName);
 				if (bundleName == null)
 				{
 					continue;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Text;
@@ -13,14 +14,23 @@ namespace OwlcatModification.Editor.Build.Context
 		/// Used for decrease chance of name collision between different modifications.
 		/// </summary>
 		[CanBeNull]
-		string GetBundleForAssetPath(string assetPath, string prefix);
+		string GetBundleForAssetPath(string assetPath, string assetGuid, string prefix);
+
+		void AddWeakAssetLink(string assetId);
 	}
 
 	public class DefaultBundleLayoutManager : IBundleLayoutManager
 	{
 		private static readonly StringBuilder StringBuilder = new StringBuilder();
-		
-		public string GetBundleForAssetPath(string assetPath, string prefix)
+
+		private HashSet<string> WeakAssetLinks = new HashSet<string>();
+
+		public void AddWeakAssetLink(string assetId)
+		{
+			WeakAssetLinks.Add(assetId);
+		}
+
+		public string GetBundleForAssetPath(string assetPath, string assetGuid, string prefix)
 		{
 			if (assetPath == null)
 			{
@@ -34,7 +44,8 @@ namespace OwlcatModification.Editor.Build.Context
 
 			if (assetPath.EndsWith(".prefab", StringComparison.OrdinalIgnoreCase) || 
 			    assetPath.EndsWith(".mat", StringComparison.OrdinalIgnoreCase) || 
-			    assetPath.EndsWith(".asset", StringComparison.OrdinalIgnoreCase))
+			    assetPath.EndsWith(".asset", StringComparison.OrdinalIgnoreCase) ||
+				WeakAssetLinks.Contains(assetGuid))
 			{
 				return GetFullBundleName(prefix, BuilderConsts.DefaultBundleName);
 			}
