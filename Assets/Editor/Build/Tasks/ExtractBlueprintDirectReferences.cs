@@ -26,6 +26,9 @@ namespace OwlcatModification.Editor.Build.Tasks
 
         [InjectContext(ContextUsage.In)]
         private IBundleBuildContent m_BundleBuildContent;
+
+		[InjectContext(ContextUsage.In)]
+		private IBundleLayoutManager m_LayoutManager;
 #pragma warning restore 649
         
         public ReturnCode Run()
@@ -122,12 +125,12 @@ namespace OwlcatModification.Editor.Build.Tasks
                     var obj_AssetId = obj["AssetId"]?.Value<string>();
                     if (obj_AssetId != null)
                     {
-                        var asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(AssetDatabase.GUIDToAssetPath(obj_AssetId));
-                        TryAddAsset(asset);
+                        m_LayoutManager.AddWeakAssetLink(obj_AssetId);
                         continue;
                     }
                 }
             }
+
 
             AssetDatabase.SaveAssets();
             
